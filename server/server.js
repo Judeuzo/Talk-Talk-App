@@ -51,7 +51,7 @@ const startServer = async () => {
     app.use("/api/audioComment", audioCommentsRoutes);
     app.use("/api/admin", adminRouter);
 
-    app.get("/api", (req, res) => {
+    app.get("/", (req, res) => {
       res.send("✅ Server is live");
     });
 
