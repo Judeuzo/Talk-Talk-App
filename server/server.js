@@ -46,14 +46,17 @@ const startServer = async () => {
     // =======================
     // Routes
     // =======================
+
+    app.get("/", (req, res) => {
+      res.send("✅ Server is live");
+    });
+
     app.use("/api/user", userRoutes);
     app.use("/api/post", postRoutes);
     app.use("/api/audioComment", audioCommentsRoutes);
     app.use("/api/admin", adminRouter);
 
-    app.get("", (req, res) => {
-      res.send("✅ Server is live");
-    });
+    
 
     // =======================
     // Local development listener
