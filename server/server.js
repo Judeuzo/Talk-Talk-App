@@ -1,39 +1,79 @@
 import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
+
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import audioCommentsRoutes from "./routes/audioCommentRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
+
+import { connectDB } from "./utils/db.js";
 import { setAdminFromEnv } from "./controllers/adminController.js";
 
-dotenv.config();
-const app=express()
-const PORT = process.env.PORT || 8080;
-const MONGO_URI = process.env.MONGODB_URI;
+// Load environment variables in development
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config({ path: process.cwd() + "/.env" });
+}
+
+const app = express();
+
+// =======================
+// Middleware
+// =======================
 app.use(cors());
 app.use(express.json());
 
+// =======================
+// MongoDB + Admin bootstrap
+// =======================
+let adminInitialized = false;
 
+const startServer = async () => {
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("❌ MONGODB_URI is missing in environment variables");
+    }
 
-// Routes
-app.use("/api/user", userRoutes);
-app.use("/api/post", postRoutes);
-app.use("/api/audioComment", audioCommentsRoutes);
-app.use("/api/admin", adminRouter);
+    // Connect to MongoDB once at startup
+    await connectDB();
 
-// MongoDB Connection
-mongoose.connect(MONGO_URI, {
-    dbName: "TalkTalkDB",
-  }).then(() => {console.log("✅ MongoDB Connected Successfully");setAdminFromEnv()})
-  .catch((err) => console.log("❌ MongoDB Connection Error:", err));
+    // Ensure admin exists (runs once)
+    if (!adminInitialized) {
+      await setAdminFromEnv();
+      adminInitialized = true;
+    }
 
+    // =======================
+    // Routes
+    // =======================
+    app.use("/api/user", userRoutes);
+    app.use("/api/post", postRoutes);
+    app.use("/api/audioComment", audioCommentsRoutes);
+    app.use("/api/admin", adminRouter);
 
-app.get("/api",(req,res)=>{
-    res.send("server is live")
-})
+    app.get("/api", (req, res) => {
+      res.send("✅ Server is live");
+    });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+    // =======================
+    // Local development listener
+    // =======================
+    if (process.env.NODE_ENV !== "production") {
+      const PORT = process.env.PORT || 8080;
+      app.listen(PORT, () => {
+        console.log(`🚀 Server running at http://localhost:${PORT}`);
+      });
+    }
+  } catch (err) {
+    console.error("❌ Server startup error:", err);
+    process.exit(1); // stop server if DB fails to connect
+  }
+};
+
+// Start server (dev) or let Vercel import app
+startServer();
+
+// =======================
+// Export for Vercel
+// =======================
+export default app;

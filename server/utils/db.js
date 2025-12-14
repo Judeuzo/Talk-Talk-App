@@ -1,17 +1,41 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-import { setAdminFromEnv } from "../controllers/adminController.js";
-dotenv.config();
 
-let isConnected = false;
+// Global cache (important for Vercel serverless)
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = {
+    conn: null,
+    promise: null,
+  };
+}
 
 export const connectDB = async () => {
-  if (isConnected) return;
 
-  await mongoose.connect(process.env.MONGODB_URI,{
-    dbName: "TalkTalkDB",
-  }).then(() => {console.log("✅ MongoDB Connected Successfully")})
-    .catch((err) => console.log("❌ MongoDB Connection Error:", err));
+  
+  if (cached.conn) {
+    return cached.conn;
+  }
 
-  isConnected = true;
+  if (!cached.promise) {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("❌ MONGODB_URI is not defined");
+    }
+
+    
+
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+      dbName: "TalkTalkDB",
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+    console.log("✅ MongoDB Connected Successfully");
+    return cached.conn;
+  } catch (error) {
+    cached.promise = null;
+    console.error("❌ MongoDB Connection Error:", error);
+    throw error;
+  }
 };
