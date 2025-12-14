@@ -1,7 +1,7 @@
 import express from "express";
 import { deleteUserAndPosts, toggleUserVerification } from "../controllers/adminController.js";
 import { protect } from "../middleWare/authMiddleware.js";
-import { adminMiddleware } from "../middleware/admin.js";
+import { adminMiddleware } from "../middleWare/admin.js";
 
 const adminRouter = express.Router();
 
