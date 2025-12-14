@@ -13,9 +13,20 @@ export function AuthProvider({ children }) {
 
 
   // Set axios base URL to your backend
-  const API = axios.create({
-    baseURL: "http://localhost:8080/api",
-  });
+
+// Determine base URL
+const baseURL =
+  import.meta.env.VITE_ENV === "development"
+    ? "http://localhost:8080/api"
+    : import.meta.env.VITE_API_URL;
+
+// Create Axios instance
+const API = axios.create({
+  baseURL,
+});
+
+  
+  
 
   // Attach token to every request
   API.interceptors.request.use((config) => {
