@@ -1,7 +1,7 @@
 import { connectDB } from "../utils/db.js";
 import { autoIncreaseViews } from "../controllers/postController.js";
 
-export default async function handler(req, res) {
+export default async function increaseViews(req, res) {
   try {
 
     await connectDB();
