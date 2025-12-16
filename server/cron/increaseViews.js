@@ -1,14 +1,18 @@
-import { connectDB } from "../../utils/db.js";
-import Post from "../../models/post.js";
+import { connectDB } from "../utils/db.js";
+import { autoIncreaseViews } from "../controllers/postController.js";
 
 export default async function handler(req, res) {
-  await connectDB();
+  try {
 
-  const posts = await Post.find();
-  for (const post of posts) {
-    post.views += Math.floor(Math.random() * 9) + 1;
-    await post.save();
+    await connectDB();
+    await autoIncreaseViews();
+
+    return res.status(200).json({
+      success: true,
+      message: "Views incremented successfully",
+    });
+  } catch (error) {
+    console.error("Cron error:", error);
+    return res.status(500).json({ success: false });
   }
-
-  res.json({ success: true });
 }

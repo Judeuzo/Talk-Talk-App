@@ -55,8 +55,6 @@ export default function NewsFeed() {
     <>
     <NavBar />
     <div className="bg-gray-100 min-h-screen overflow-x-hidden relative">
-      
-      <FloatingMenu/>
 
       <div className="pt-3 flex flex-col items-center">
 
