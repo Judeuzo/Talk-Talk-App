@@ -1,9 +1,9 @@
-import { connectDB } from "../utils/db.js";
 import { autoIncreaseViews } from "../controllers/postController.js";
+import { connectDB } from "../utils/db.js";
 
-export default async function increaseViews(req, res) {
+export default async function handler(req, res) {
   try {
-
+    // Allow GET or POST (easier for testing)
     await connectDB();
     await autoIncreaseViews();
 
@@ -12,7 +12,10 @@ export default async function increaseViews(req, res) {
       message: "Views incremented successfully",
     });
   } catch (error) {
-    console.error("Cron error:", error);
-    return res.status(500).json({ success: false });
+    console.error("Increase views cron error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to increase views",
+    });
   }
 }
