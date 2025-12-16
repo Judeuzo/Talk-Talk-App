@@ -75,7 +75,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/audioComment", audioCommentsRoutes);
 app.use("/api/admin", adminRouter);
-app.post("/cron/increaseViews", async (req, res) => {
+app.get("/cron/increaseViews", async (req, res) => {
   try {
     await increaseViews();
     res.json({
