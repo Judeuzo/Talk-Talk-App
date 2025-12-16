@@ -9,7 +9,7 @@
   ],
   "crons": [
     {
-      "path": "/server/cron/increaseViews",
+      "path": "/cron/increaseViews",
       "schedule": "*/1 * * * *"
     }
   ]
