@@ -181,7 +181,7 @@ export const autoIncreaseViews = async () => {
   try {
     const posts = await Post.find();
     for (const post of posts) {
-      const randomIncrement = Math.floor(Math.random() * 99) + 1;
+      const randomIncrement = Math.floor(Math.random() * 33) + 1;
       post.views += randomIncrement;
       await post.save();
     }

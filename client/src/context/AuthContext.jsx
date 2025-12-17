@@ -51,6 +51,7 @@ const API = axios.create({
       toast.success(res.data.message);
       setUser(res.data.user)
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      getAllPosts()
       return { success: true, data: res.data };
       
     } catch (err) {
@@ -75,6 +76,7 @@ const API = axios.create({
       localStorage.setItem("user", JSON.stringify(res.data.user));
       toast.success(res.data.message)
       console.log(localStorage.getItem("user"));
+      getAllPosts()
       return { success: true };
     } catch (err) {
         toast.error(err.response?.data?.message)
