@@ -9,7 +9,6 @@ import adminRouter from "./routes/adminRoutes.js";
 
 import { connectDB } from "./utils/db.js";
 import { setAdminFromEnv } from "./controllers/adminController.js";
-import { increaseViews } from "./cron/increaseViews.js";
 
 // Load env in development
 if (process.env.NODE_ENV !== "production") {
@@ -75,22 +74,6 @@ app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/audioComment", audioCommentsRoutes);
 app.use("/api/admin", adminRouter);
-app.post("/cron/increaseViews", async (req, res) => {
-  try {
-    await increaseViews();
-    res.json({
-      success: true,
-      message: "Views incremented successfully",
-    });
-  } catch (err) {
-    console.error("Increase views error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Failed to increase views",
-    });
-  }
-});
-
 
 // =======================
 // Export for Vercel
