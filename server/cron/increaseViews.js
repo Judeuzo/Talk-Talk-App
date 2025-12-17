@@ -5,7 +5,7 @@ export const increaseViews = async () => {
   const posts = await Post.find();
 
   for (const post of posts) {
-    const randomIncrement = Math.floor(Math.random() * 9) + 1;
+    const randomIncrement = Math.floor(Math.random() * 100) + 1;
     post.views += randomIncrement;
     await post.save();
   }
