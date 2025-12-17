@@ -32,15 +32,15 @@ return (
           className="material-icons text-3xl cursor-pointer hover:opacity-70 transition"
           onClick={() => setOpenMenu(!openMenu)}
         >
-          person
+          menu
         </span>
 
         {/* Dropdown menu */}
         {openMenu && (
           <div
-            className="absolute right-0 top-13 bg-black text-black border-b-10 border-primary p-6 animate-fadeIn"
+            className="absolute right-0 top-13 bg-black min-w-30 text-black border-b-10 border-primary animate-fadeIn"
           >
-            <ul className="space-y-4 flex flex-col divide-y-1 divide-white text-white text-sm">
+            <ul className="space-y-4 flex flex-col p-3 text-center divide-white text-white text-sm">
               <a href="/NewsFeed" className="cursor-pointer hover:opacity-70 transition">Topics</a>
               <a href={`/profile/${user._id}`} className="cursor-pointer hover:opacity-70 transition">
                 Profile

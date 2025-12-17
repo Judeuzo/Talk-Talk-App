@@ -6,6 +6,12 @@
   ],
   "routes": [
     { "src": "/(.*)", "dest": "server.js" }
+  ],
+  "crons": [
+    {
+      "path": "/cron/increaseViews",
+      "schedule": "*/1 * * * *"
+    }
   ]
   
 }

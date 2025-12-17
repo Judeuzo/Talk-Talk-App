@@ -23,10 +23,19 @@ export const connectDB = async () => {
     }
 
     
-
+    
+    if(process.env.NODE_ENV=='development'){
+      console.log('server is development')
+      cached.promise = mongoose.connect('mongodb://localhost:27017/', {
+      dbName: "TalkTalkDB",
+    });
+    }else{
+      console.log('server is production')
     cached.promise = mongoose.connect(process.env.MONGODB_URI, {
       dbName: "TalkTalkDB",
     });
+    }
+    
   }
 
   try {
