@@ -100,6 +100,7 @@ export const deleteExpiredPosts = async () => {
 export const getAllPosts = async (req, res) => {
   try {
     await deleteExpiredPosts();
+    await autoIncreaseViews();
 
     const posts = await Post.find()
       .sort({ createdAt: -1 })
@@ -180,7 +181,7 @@ export const autoIncreaseViews = async () => {
   try {
     const posts = await Post.find();
     for (const post of posts) {
-      const randomIncrement = Math.floor(Math.random() * 9) + 1;
+      const randomIncrement = Math.floor(Math.random() * 99) + 1;
       post.views += randomIncrement;
       await post.save();
     }
