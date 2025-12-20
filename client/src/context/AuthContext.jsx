@@ -141,6 +141,31 @@ const API = axios.create({
   }
 };
 
+ /* ===========================
+        UPDATE LAST SEEN
+  =========================== */
+
+  const formatLastSeen = (date) =>
+  new Date(date).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+
+  const lastSeen = async () => {
+    
+  try {
+    const res = await API.post("/user/lastSeen");
+    
+  } catch (err) {
+    console.error("last seen error:", err);
+    toast.error("Could not update last seen");
+    return { success: false, users: [] };
+  }
+};
+
 
 
   /* ===========================
@@ -349,8 +374,18 @@ const toggleVerifyUser = async (userId) => {
     if (savedUser) setUser(JSON.parse(savedUser));
     savedUser && getAllPosts()
     savedUser && getAllUsers()
+    savedUser && lastSeen()
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    lastSeen()
+  }, 30000);
+
+  return () => clearInterval(interval);
+}, []);
+
 
   return (
     <AuthContext.Provider
@@ -373,7 +408,8 @@ const toggleVerifyUser = async (userId) => {
         allUsers,
         likePost,
         deleteUser,
-        toggleVerifyUser
+        toggleVerifyUser,
+        formatLastSeen
         
       }}
     >

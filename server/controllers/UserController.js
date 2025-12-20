@@ -129,3 +129,20 @@ export const getAllUsers = async (req, res) => {
     });
   }
 };
+
+/* ================================
+   UPDATE LAST SEEN
+================================ */
+
+export const updateLastSeen = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.userId, {
+      lastSeen: new Date()
+    });
+
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(500);
+  }
+};
+

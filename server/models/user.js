@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema(
     verified: { type: Boolean, default: false },
     admin: { type: Boolean, default: false },
     views: { type: Number, default: 0 },
+    lastSeen: {
+                type: Date,
+                default: Date.now,
+              },
     avatar: { type: String, default: "" } // Cloudinary URL
   },
   { timestamps: true }

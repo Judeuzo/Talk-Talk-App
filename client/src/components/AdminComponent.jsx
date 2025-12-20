@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import OptionModal from "./OptionModal";
 
 export default function AdminComponent() {
-  const { allUsers, deleteUser, toggleVerifyUser } = useContext(AuthContext);
+  const { allUsers, deleteUser, toggleVerifyUser,formatLastSeen } = useContext(AuthContext);
 
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState("");
@@ -55,7 +55,7 @@ export default function AdminComponent() {
             onClick={() => navigate(`/profile/${u?._id}`)}
             className="w-full p-2 border-primary cursor-pointer"
           >
-            <div className="flex md:flex-row md:items-center md:justify-between py-6 gap-4">
+            <div className="flex md:flex-row md:items-center md:justify-between py-2 gap-4">
 
               {/* Avatar + Name */}
               <div className="flex items-center gap-4 md:gap-6">
@@ -116,6 +116,11 @@ export default function AdminComponent() {
                 </ul>
               </details>
             </div>
+            
+            {/* Last Seen */}
+              <p className="text-xs mb-2 md:text-m ml-auto self-center font-light text-gray-300">
+                last Seen {formatLastSeen(u?.lastSeen)}
+              </p>
 
             <hr className="border-gray-300" />
           </div>

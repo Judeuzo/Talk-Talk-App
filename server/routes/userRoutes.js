@@ -4,6 +4,7 @@ import {
   login,
   updateProfile,
   getAllUsers,
+  updateLastSeen,
 } from "../controllers/UserController.js";
 
 import { protect } from "../middleWare/authMiddleware.js";
@@ -22,5 +23,6 @@ router.get("/all", getAllUsers);
    USER ROUTES
 ========================= */
 router.put("/update",protect, upload.single("avatar"), updateProfile);
+router.post("/lastSeen",protect, updateLastSeen);
 
 export default router;
