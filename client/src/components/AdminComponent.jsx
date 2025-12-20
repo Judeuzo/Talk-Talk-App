@@ -118,7 +118,7 @@ export default function AdminComponent() {
             </div>
             
             {/* Last Seen */}
-              <p className="text-xs mb-2 md:text-m ml-auto self-center font-light text-gray-300">
+              <p className="text-xs mb-2 md:text-m ml-auto self-center font-light text-gray-400">
                 last Seen {formatLastSeen(u?.lastSeen)}
               </p>
 

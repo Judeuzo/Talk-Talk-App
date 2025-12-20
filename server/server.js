@@ -24,6 +24,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔥 CRITICAL FOR VERCEL (minimal fix)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("❌ DB connection failed:", err);
+    res.status(500).json({ message: "Database connection error" });
+  }
+});
+
 // =======================
 // MongoDB + Admin bootstrap
 // =======================
@@ -35,10 +46,8 @@ const initServer = async () => {
       throw new Error("❌ MONGODB_URI is missing in environment variables");
     }
 
-    // Connect to MongoDB once
     await connectDB();
 
-    // Ensure admin setup runs once
     if (!adminInitialized) {
       await setAdminFromEnv();
       adminInitialized = true;
@@ -51,7 +60,7 @@ const initServer = async () => {
   }
 };
 
-// Run initialization only in development (for local server)
+// Run initialization only in development
 if (process.env.NODE_ENV !== "production") {
   initServer().then(() => {
     const PORT = process.env.PORT || 8080;
@@ -60,7 +69,7 @@ if (process.env.NODE_ENV !== "production") {
     });
   });
 } else {
-  // In production (Vercel), just init DB/admin without listening
+  // Vercel
   initServer();
 }
 
@@ -75,6 +84,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/audioComment", audioCommentsRoutes);
 app.use("/api/admin", adminRouter);
+
 app.post("/cron/increaseViews", async (req, res) => {
   try {
     await increaseViews();
@@ -90,7 +100,6 @@ app.post("/cron/increaseViews", async (req, res) => {
     });
   }
 });
-
 
 // =======================
 // Export for Vercel
