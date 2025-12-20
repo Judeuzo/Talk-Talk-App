@@ -140,6 +140,13 @@ export const deletePost = async (req, res) => {
     if (post.user.toString() !== userId)
       return res.status(403).json({ success: false, message: "Not allowed" });
 
+    // ✅ ADD POST VIEWS TO USER BEFORE DELETE
+    if (post.views > 0) {
+      await User.findByIdAndUpdate(post.user, {
+        $inc: { views: post.views },
+      });
+    }
+
     for (const img of post.images || []) {
       if (img.public_id) {
         try {
@@ -173,6 +180,7 @@ export const deletePost = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to delete post" });
   }
 };
+
 
 // ===========================
 // AUTO-INCREMENT POST VIEWS (Development only)

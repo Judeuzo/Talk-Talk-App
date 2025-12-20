@@ -18,15 +18,6 @@ export default function Profile() {
     }
   })
 
-  
-
-  // Example Post Images
-  const sampleImages = [
-    "/images/food1.jpg",
-    "/images/food2.jpg",
-    "/images/food3.jpg"
-  ];
-
   return (
 
     <div className="w-full min-h-screen bg-gray-100">

@@ -6,6 +6,18 @@ import cloudinary from "../cloudinary.js";
 /* ================================
    REGISTER USER
 ================================ */
+
+const genericAvatars = [ 
+  "https://api.dicebear.com/7.x/avataaars/svg?seed=one",
+  "https://api.dicebear.com/7.x/avataaars/svg?seed=two",
+  "https://api.dicebear.com/7.x/avataaars/svg?seed=three",
+  "https://api.dicebear.com/7.x/avataaars/svg?seed=four",
+];
+
+const getRandomAvatar = () =>
+  genericAvatars[Math.floor(Math.random() * genericAvatars.length)];
+
+
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -20,9 +32,14 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      avatar: getRandomAvatar(), // ✅ random generic profile picture
     });
 
-    res.json({ message: "User registered", user });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res.json({ message: "User registered", user,token });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

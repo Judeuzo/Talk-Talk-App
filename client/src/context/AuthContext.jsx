@@ -47,10 +47,15 @@ const API = axios.create({
         password,
       });
 
-      console.log("Registered:", res.data);
-      toast.success(res.data.message);
+      setUser(res.data.user);
+      setToken(res.data.token);
+
+      localStorage.setItem("token", res.data.token);
+
       setUser(res.data.user)
       localStorage.setItem("user", JSON.stringify(res.data.user));
+      toast.success(res.data.message)
+      console.log(localStorage.getItem("user"));
       getAllPosts()
       return { success: true, data: res.data };
       
@@ -339,10 +344,11 @@ const toggleVerifyUser = async (userId) => {
 
   // Load user from localStorage on refresh
   useEffect(() => {
-    getAllPosts()
-    getAllUsers()
+    
     const savedUser = localStorage.getItem("user");
     if (savedUser) setUser(JSON.parse(savedUser));
+    savedUser && getAllPosts()
+    savedUser && getAllUsers()
     setLoading(false);
   }, []);
 
