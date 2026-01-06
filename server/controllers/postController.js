@@ -99,7 +99,7 @@ export const deleteExpiredPosts = async () => {
 // ===========================
 export const getAllPosts = async (req, res) => {
   try {
-    await deleteExpiredPosts();
+    // await deleteExpiredPosts(); 
     await autoIncreaseViews();
 
     const posts = await Post.find()

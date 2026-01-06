@@ -15,10 +15,7 @@ export default function NewsFeed() {
   const [previewImages, setPreviewImages] = useState([]);
   const [loading, setLoading] = useState(false);
   
-
   const [openCreatePost, setOpenCreatePost] = useState(false);
-
-  
 
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files);
@@ -78,6 +75,7 @@ export default function NewsFeed() {
               <h2 className="text-xl font-semibold mb-4">Create Post</h2>
 
               <form onSubmit={handleCreatePost} encType="multipart/form-data">
+
                 {/* Caption */}
                 <textarea
                   value={caption}
