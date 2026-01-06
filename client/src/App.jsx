@@ -10,6 +10,7 @@ import { AuthContext } from "./context/AuthContext";
 import PostPage from "./pages/PostPage.jsx";
 import FeedBackPage from "./pages/FeedBackPage.jsx";
 import AdminPage from "./pages/AdminPage.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 
 
@@ -43,6 +44,7 @@ if (loading) {
 
   return (
     <Router>
+      <Analytics />
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<SignUpPage />} />
